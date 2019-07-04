@@ -4,6 +4,8 @@
 #include "JLRPGCharacter.h"
 #include"Components/CapsuleComponent.h"
 #include"GameFramework/CharacterMovementComponent.h"
+#include"GameFramework/SpringArmComponent.h"
+#include"Camera/CameraComponent.h"
 // Sets default values
 AJLRPGCharacter::AJLRPGCharacter()
 {
@@ -24,6 +26,16 @@ AJLRPGCharacter::AJLRPGCharacter()
 	GetCharacterMovement()->RotationRate = FRotator(0.0f,540.0f,0.0f);
 	GetCharacterMovement()->JumpZVelocity = 600.0f;
 	GetCharacterMovement()->AirControl = 0.2f;
+
+	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
+	CameraBoom->SetupAttachment(RootComponent);
+	CameraBoom->TargetArmLength = 300.0f;
+	CameraBoom->bUsePawnControlRotation = true;
+
+	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
+	FollowCamera->SetupAttachment(CameraBoom);
+	FollowCamera->bUsePawnControlRotation = false;
+
 
 
 

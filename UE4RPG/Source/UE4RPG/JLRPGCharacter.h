@@ -27,10 +27,18 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	//X轴旋转镜头速率
-	UPROPERTY(VisiableAnywhere, BluerintReadOnly, Category = "Camera|Rate")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera|Rate")
 	float BaseTurnRate;
 	//Y轴旋转镜头速率
-	UPROPERTY(VisiableAnywhere, BlueprintReadOnly, Category = "Camera|Rate")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera|Rate")
 	float BaseLookUpRate;
+
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, Meta = (AllowPrivateAccess = "true"))
+	class USpringArmComponent* CameraBoom;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, Meta = (AllowPrivateAccess = "true"))
+	class UCameraComponent* FollowCamera;
+	
 
 };
