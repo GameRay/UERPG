@@ -60,8 +60,20 @@ void AJLRPGCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 	PlayerInputComponent->BindAction("Jump", EInputEvent::IE_Pressed, this, ACharacter::Jump);;
-	PlayerInputComponent->BindAction("Jump",EInputEvent::IE_Released,this,ACharacter::StopJumping);S
-	//PlayerInputComponent->BindAction("ResetVR",EInputEvent::IE_Pressed);
+	PlayerInputComponent->BindAction("Jump",EInputEvent::IE_Released,this,ACharacter::StopJumping);
+	PlayerInputComponent->BindAction("ResetVR",EInputEvent::IE_Pressed,this,AJLRPGCharacter::OnResetVR);
+
+
+
+	PlayerInputComponent->BindAxis("MoveForward",this,AJLRPGCharacter::MoveForward);
+	PlayerInputComponent->BindAxis("MoveRight", this, AJLRPGCharacter::MoveRight);
+	PlayerInputComponent->BindAxis("Turn", this, APawn::AddControllerYawInput);
+	PlayerInputComponent->BindAxis("TurnRate", this, AJLRPGCharacter::TurnAtRate);
+	PlayerInputComponent->BindAxis("LookUp", this, APawn::AddControllerPitchInput);
+	PlayerInputComponent->BindAxis("LookUpRate", this, AJLRPGCharacter::LookUpAtRate);
+
+	PlayerInputComponent->BindTouch(EInputEvent::IE_Pressed,this,AJLRPGCharacter::TouchStarted);
+	PlayerInputComponent->BindTouch(EInputEvent::IE_Released, this, AJLRPGCharacter::TouchStoped);
 
 
 }

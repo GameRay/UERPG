@@ -42,6 +42,13 @@ public:
 
 protected:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	void OnResetVR();
+	void MoveForward(float Value);
+	void MoveRight(float Value);
+	void TurnAtRate(float Rate);
+	void LookUpAtRate(float Rate);
+	void TouchStarted(ETouchIndex::Type FingerIndex, FVector Location);
+	void TouchStoped(ETouchIndex::Type FingerIndex,FVector Location);
 	
 
 };
