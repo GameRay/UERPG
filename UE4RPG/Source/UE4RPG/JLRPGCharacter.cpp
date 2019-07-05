@@ -6,6 +6,7 @@
 #include"GameFramework/CharacterMovementComponent.h"
 #include"GameFramework/SpringArmComponent.h"
 #include"Camera/CameraComponent.h"
+#include"Components/InputComponent.h"
 // Sets default values
 AJLRPGCharacter::AJLRPGCharacter()
 {
@@ -36,12 +37,6 @@ AJLRPGCharacter::AJLRPGCharacter()
 	FollowCamera->SetupAttachment(CameraBoom);
 	FollowCamera->bUsePawnControlRotation = false;
 
-
-
-
-
-
-
 }
 
 // Called when the game starts or when spawned
@@ -61,7 +56,13 @@ void AJLRPGCharacter::Tick(float DeltaTime)
 // Called to bind functionality to input
 void AJLRPGCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
+	check(PlayerInputComponent)
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+
+	PlayerInputComponent->BindAction("Jump", EInputEvent::IE_Pressed, this, ACharacter::Jump);;
+	PlayerInputComponent->BindAction("Jump",EInputEvent::IE_Released,this,ACharacter::StopJumping);S
+	//PlayerInputComponent->BindAction("ResetVR",EInputEvent::IE_Pressed);
+
 
 }
 
