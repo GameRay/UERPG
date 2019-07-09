@@ -40,8 +40,24 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, Meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* FollowCamera;
 
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float Health = 0;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float Mono = 0;
+
+	UFUNCTION(BlueprintCallable)
+	void SetHealth(float Value);
+
+	UFUNCTION(BlueprintCallable)
+	void AddHealth(float Value);
+
+
+
 protected:
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	//virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	void OnResetVR();
 	void MoveForward(float Value);
 	void MoveRight(float Value);
@@ -49,6 +65,9 @@ protected:
 	void LookUpAtRate(float Rate);
 	void TouchStarted(ETouchIndex::Type FingerIndex, FVector Location);
 	void TouchStoped(ETouchIndex::Type FingerIndex,FVector Location);
+	
+
+
 	
 
 };

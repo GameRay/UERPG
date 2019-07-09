@@ -7,11 +7,14 @@
 #include"GameFramework/SpringArmComponent.h"
 #include"Camera/CameraComponent.h"
 #include"Components/InputComponent.h"
+#include"HeadMountedDisplayFunctionLibrary.h"
+#include"GameFramework/Controller.h"
 // Sets default values
 AJLRPGCharacter::AJLRPGCharacter()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	//PrimaryActorTick.bCanEverTick = true;
+	//Super::ACharacter();
+	PrimaryActorTick.bCanEverTick = true;
 
 	BaseTurnRate = 45.0f;
 	BaseLookUpRate = 45.0f;
@@ -59,22 +62,85 @@ void AJLRPGCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 	check(PlayerInputComponent)
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	PlayerInputComponent->BindAction("Jump", EInputEvent::IE_Pressed, this, ACharacter::Jump);;
-	PlayerInputComponent->BindAction("Jump",EInputEvent::IE_Released,this,ACharacter::StopJumping);
-	PlayerInputComponent->BindAction("ResetVR",EInputEvent::IE_Pressed,this,AJLRPGCharacter::OnResetVR);
+	PlayerInputComponent->BindAction("Jump", EInputEvent::IE_Pressed, this,&ACharacter::Jump);;
+	PlayerInputComponent->BindAction("Jump",EInputEvent::IE_Released,this,&ACharacter::StopJumping);
+	PlayerInputComponent->BindAction("ResetVR",EInputEvent::IE_Pressed,this,&AJLRPGCharacter::OnResetVR);
 
 
 
-	PlayerInputComponent->BindAxis("MoveForward",this,AJLRPGCharacter::MoveForward);
-	PlayerInputComponent->BindAxis("MoveRight", this, AJLRPGCharacter::MoveRight);
-	PlayerInputComponent->BindAxis("Turn", this, APawn::AddControllerYawInput);
-	PlayerInputComponent->BindAxis("TurnRate", this, AJLRPGCharacter::TurnAtRate);
-	PlayerInputComponent->BindAxis("LookUp", this, APawn::AddControllerPitchInput);
-	PlayerInputComponent->BindAxis("LookUpRate", this, AJLRPGCharacter::LookUpAtRate);
+	PlayerInputComponent->BindAxis("MoveForward",this,&AJLRPGCharacter::MoveForward);
+	PlayerInputComponent->BindAxis("MoveRight", this, &AJLRPGCharacter::MoveRight);
+	PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
+	PlayerInputComponent->BindAxis("TurnRate", this,&AJLRPGCharacter::TurnAtRate);
+	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
+	PlayerInputComponent->BindAxis("LookUpRate", this, &AJLRPGCharacter::LookUpAtRate);
 
-	PlayerInputComponent->BindTouch(EInputEvent::IE_Pressed,this,AJLRPGCharacter::TouchStarted);
-	PlayerInputComponent->BindTouch(EInputEvent::IE_Released, this, AJLRPGCharacter::TouchStoped);
+	PlayerInputComponent->BindTouch(EInputEvent::IE_Pressed,this,&AJLRPGCharacter::TouchStarted);
+	PlayerInputComponent->BindTouch(EInputEvent::IE_Released, this, &AJLRPGCharacter::TouchStoped);
 
 
 }
 
+void AJLRPGCharacter::OnResetVR()
+{
+	UHeadMountedDisplayFunctionLibrary::ResetOrientationAndPosition();
+}
+
+void AJLRPGCharacter::TouchStarted(ETouchIndex::Type FingerIndex, FVector Location)
+{
+	Jump();
+}
+void AJLRPGCharacter::TouchStoped(ETouchIndex::Type FingerIndex,FVector Location)
+{
+	StopJumping();
+}
+
+void AJLRPGCharacter::TurnAtRate(float Rate)
+{
+	AddControllerYawInput(Rate*BaseTurnRate*GetWorld()->GetDeltaSeconds());
+}
+
+void AJLRPGCharacter::LookUpAtRate(float Rate)
+{
+	AddControllerPitchInput(Rate*BaseLookUpRate*GetWorld()->GetDeltaSeconds());
+}
+
+void AJLRPGCharacter::MoveForward(float Value)
+{
+	if ((Controller!=NULL)&&(Value!=0.0f))
+	{
+		const FRotator Rotation = GetController()->GetControlRotation();
+		const FRotator YawRotation(0,Rotation.Yaw,0);
+		//获取此时的正前方 X
+		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
+
+		AddMovementInput(Direction,Value);
+	}
+}
+
+void AJLRPGCharacter::MoveRight(float Value)
+{
+	if ((Controller!=NULL)&&(Value!=0))
+	{
+		const FRotator Rotation = GetController()->GetControlRotation();
+		const FRotator YawRotation(0,Rotation.Yaw,0);
+
+		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+
+
+		AddMovementInput(Direction,Value);
+	}
+}
+
+void AJLRPGCharacter::SetHealth(float Value)
+{
+	if (Value>=0)
+	{
+		Health = Value;
+	}
+	
+}
+void AJLRPGCharacter::AddHealth(float Value)
+{
+	(Health = (Health + Value)) < 0 ? 0 : Health;
+}
