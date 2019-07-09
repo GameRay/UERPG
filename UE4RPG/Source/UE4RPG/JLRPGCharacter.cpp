@@ -9,6 +9,7 @@
 #include"Components/InputComponent.h"
 #include"HeadMountedDisplayFunctionLibrary.h"
 #include"GameFramework/Controller.h"
+#include"Components/SkeletalMeshComponent.h"
 // Sets default values
 AJLRPGCharacter::AJLRPGCharacter()
 {
@@ -16,6 +17,10 @@ AJLRPGCharacter::AJLRPGCharacter()
 	//Super::ACharacter();
 	PrimaryActorTick.bCanEverTick = true;
 
+	UObject *SKMeshObj=LoadObject<UObject>(NULL,TEXT("/Game/Mesh/Character/Eve_by_J__Gonzales.Eve_by_J__Gonzales"));
+	USkeletalMesh* SKMesh = Cast<USkeletalMesh>(SKMeshObj);
+	
+	GetMesh()->SetSkeletalMesh(SKMesh);
 	BaseTurnRate = 45.0f;
 	BaseLookUpRate = 45.0f;
 
