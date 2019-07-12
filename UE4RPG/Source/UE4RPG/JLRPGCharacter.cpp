@@ -17,7 +17,7 @@ AJLRPGCharacter::AJLRPGCharacter()
 	//Super::ACharacter();
 	PrimaryActorTick.bCanEverTick = true;
 
-	UObject *SKMeshObj=LoadObject<UObject>(NULL,TEXT("/Game/Mesh/Character/Eve_by_J__Gonzales.Eve_by_J__Gonzales"));
+	UObject *SKMeshObj=LoadObject<UObject>(NULL,TEXT("/Game/Mesh/Character/Eve/Eve_by_J__Gonzales.Eve_by_J__Gonzales"));
 	USkeletalMesh* SKMesh = Cast<USkeletalMesh>(SKMeshObj);
 	
 	GetMesh()->SetSkeletalMesh(SKMesh);
@@ -148,4 +148,5 @@ void AJLRPGCharacter::SetHealth(float Value)
 void AJLRPGCharacter::AddHealth(float Value)
 {
 	(Health = (Health + Value)) < 0 ? 0 : Health;
+	(Health > 1) ? Health : 1;
 }
