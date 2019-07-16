@@ -10,6 +10,7 @@
 #include"HeadMountedDisplayFunctionLibrary.h"
 #include"GameFramework/Controller.h"
 #include"Components/SkeletalMeshComponent.h"
+#include"UMG/Public/Blueprint/UserWidget.h"
 // Sets default values
 AJLRPGCharacter::AJLRPGCharacter()
 {
@@ -19,6 +20,21 @@ AJLRPGCharacter::AJLRPGCharacter()
 
 	UObject *SKMeshObj=LoadObject<UObject>(NULL,TEXT("/Game/Mesh/Character/Eve/Eve_by_J__Gonzales.Eve_by_J__Gonzales"));
 	USkeletalMesh* SKMesh = Cast<USkeletalMesh>(SKMeshObj);
+	TSubclassOf<UUserWidget> JLWidgetClass = nullptr;
+	JLWidgetClass = LoadClass<UUserWidget>(this, TEXT("/Game/ThirdPersonCPP/Blueprints/RPGHUD.RPGHUD"));
+	UUserWidget*WidgetRPG = nullptr;
+	if (JLWidgetClass)
+	{
+		WidgetRPG = CreateWidget<UUserWidget>(GetWorld(), JLWidgetClass);
+		TArray<FName> JLSlots;
+		JLSlots.Empty();
+		WidgetRPG->GetSlotNames(JLSlots);
+		for (int i = 0; i < JLSlots.Num(); i++)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("SlotName:%s"), *JLSlots[i].ToString());
+		}
+	}
+	
 	
 	GetMesh()->SetSkeletalMesh(SKMesh);
 	BaseTurnRate = 45.0f;
