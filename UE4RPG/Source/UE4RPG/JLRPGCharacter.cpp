@@ -10,7 +10,10 @@
 #include"HeadMountedDisplayFunctionLibrary.h"
 #include"GameFramework/Controller.h"
 #include"Components/SkeletalMeshComponent.h"
-#include"UMG/Public/Blueprint/UserWidget.h"
+#include"Runtime/UMG/Public/Blueprint/UserWidget.h"
+#include"SlateCore/Public/Styling/SlateBrush.h"
+#include"UMG/Public/Components/Image.h"
+#include"D:\Program Files\Epic Games\UE_4.22\Engine\Source\Runtime\UMG\Public\Components\Image.h"
 // Sets default values
 AJLRPGCharacter::AJLRPGCharacter()
 {
@@ -20,20 +23,7 @@ AJLRPGCharacter::AJLRPGCharacter()
 
 	UObject *SKMeshObj=LoadObject<UObject>(NULL,TEXT("/Game/Mesh/Character/Eve/Eve_by_J__Gonzales.Eve_by_J__Gonzales"));
 	USkeletalMesh* SKMesh = Cast<USkeletalMesh>(SKMeshObj);
-	TSubclassOf<UUserWidget> JLWidgetClass = nullptr;
-	JLWidgetClass = LoadClass<UUserWidget>(this, TEXT("/Game/ThirdPersonCPP/Blueprints/RPGHUD.RPGHUD"));
-	UUserWidget*WidgetRPG = nullptr;
-	if (JLWidgetClass)
-	{
-		WidgetRPG = CreateWidget<UUserWidget>(GetWorld(), JLWidgetClass);
-		TArray<FName> JLSlots;
-		JLSlots.Empty();
-		WidgetRPG->GetSlotNames(JLSlots);
-		for (int i = 0; i < JLSlots.Num(); i++)
-		{
-			UE_LOG(LogTemp, Warning, TEXT("SlotName:%s"), *JLSlots[i].ToString());
-		}
-	}
+	
 	
 	
 	GetMesh()->SetSkeletalMesh(SKMesh);
@@ -67,7 +57,33 @@ AJLRPGCharacter::AJLRPGCharacter()
 void AJLRPGCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+	//
+
+	/*UUserWidget* UserWidget = nullptr;
+	TSubclassOf<UUserWidget> WidgetClass = LoadClass<UUserWidget>(this, TEXT("/Game/ThirdPersonCPP/Blueprints/RPGHUD.RPGHUD_C"));
+	if (WidgetClass)
+	{
+		UserWidget = CreateWidget<UUserWidget>(GetWorld(), WidgetClass);
+	}*/
+
+	UUserWidget*UserWidge = nullptr;
+	TSubclassOf<UUserWidget> WidgetClas = LoadClass<UUserWidget>(this, TEXT("/Game/ThirdPersonCPP/Blueprints/RPGHUD.RPGHUD_C"));
+
+
 	
+	if (WidgetClas)
+	{
+		UserWidge = CreateWidget<UUserWidget>(GetWorld(),WidgetClas);
+		UserWidge->AddToViewport();
+		UWidget* pro=UserWidge->GetWidgetFromName(FName("Image_75"));
+		if (pro)
+		{
+			UImage*Image = Cast<UImage>(pro);
+			
+			UE_LOG(LogTemp, Warning, TEXT("SlotName:--%s"),*(Image->Brush.GetResourceName().ToString()));
+		}
+		
+	}
 }
 
 // Called every frame
