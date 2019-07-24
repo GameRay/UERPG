@@ -13,7 +13,7 @@
 #include"Runtime/UMG/Public/Blueprint/UserWidget.h"
 #include"SlateCore/Public/Styling/SlateBrush.h"
 #include"UMG/Public/Components/Image.h"
-#include"D:\Program Files\Epic Games\UE_4.22\Engine\Source\Runtime\UMG\Public\Components\Image.h"
+//#include"D:\Program Files\Epic Games\UE_4.22\Engine\Source\Runtime\UMG\Public\Components\Image.h"
 // Sets default values
 AJLRPGCharacter::AJLRPGCharacter()
 {
@@ -59,14 +59,8 @@ void AJLRPGCharacter::BeginPlay()
 	Super::BeginPlay();
 	//
 
-	/*UUserWidget* UserWidget = nullptr;
-	TSubclassOf<UUserWidget> WidgetClass = LoadClass<UUserWidget>(this, TEXT("/Game/ThirdPersonCPP/Blueprints/RPGHUD.RPGHUD_C"));
-	if (WidgetClass)
-	{
-		UserWidget = CreateWidget<UUserWidget>(GetWorld(), WidgetClass);
-	}*/
 
-	UUserWidget*UserWidge = nullptr;
+	/*UUserWidget*UserWidge = nullptr;
 	TSubclassOf<UUserWidget> WidgetClas = LoadClass<UUserWidget>(this, TEXT("/Game/ThirdPersonCPP/Blueprints/RPGHUD.RPGHUD_C"));
 
 
@@ -83,7 +77,7 @@ void AJLRPGCharacter::BeginPlay()
 			UE_LOG(LogTemp, Warning, TEXT("SlotName:--%s"),*(Image->Brush.GetResourceName().ToString()));
 		}
 		
-	}
+	}*/
 }
 
 // Called every frame
