@@ -46,12 +46,15 @@ public:
 	float Health = 0;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float Mono = 0;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int Coins = 0;
 
 	UFUNCTION(BlueprintCallable)
 	void SetHealth(float Value);
 
 	UFUNCTION(BlueprintCallable)
 	void AddHealth(float Value);
+
 
 
 
