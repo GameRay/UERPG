@@ -13,6 +13,7 @@
 #include"Runtime/UMG/Public/Blueprint/UserWidget.h"
 #include"SlateCore/Public/Styling/SlateBrush.h"
 #include"UMG/Public/Components/Image.h"
+#include"Classes/Kismet/GameplayStatics.h"
 //#include"D:\Program Files\Epic Games\UE_4.22\Engine\Source\Runtime\UMG\Public\Components\Image.h"
 // Sets default values
 AJLRPGCharacter::AJLRPGCharacter()
@@ -96,7 +97,7 @@ void AJLRPGCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 	PlayerInputComponent->BindAction("Jump", EInputEvent::IE_Pressed, this,&ACharacter::Jump);;
 	PlayerInputComponent->BindAction("Jump",EInputEvent::IE_Released,this,&ACharacter::StopJumping);
 	PlayerInputComponent->BindAction("ResetVR",EInputEvent::IE_Pressed,this,&AJLRPGCharacter::OnResetVR);
-
+	PlayerInputComponent->BindAction("InputOpenBag",EInputEvent::IE_Pressed,this,&AJLRPGCharacter::OpenMyBag);
 
 
 	PlayerInputComponent->BindAxis("MoveForward",this,&AJLRPGCharacter::MoveForward);
@@ -175,4 +176,13 @@ void AJLRPGCharacter::AddHealth(float Value)
 {
 	(Health = (Health + Value)) < 0 ? 0 : Health;
 	(Health > 1) ? Health : 1;
+}
+void AJLRPGCharacter::OpenMyBag()
+{
+	TSubclassOf<UUserWidget> BagWidget = LoadClass<UUserWidget>(this, TEXT("/Game/Blueprint/Inventory.Inventory_C"));
+	if (BagWidget)
+	{
+		CreateWidget<UUserWidget>(GetWorld(),BagWidget)->AddToViewport();
+		UGameplayStatics::GetPlayerController(GetWorld(),0)->bShowMouseCursor=1;
+	}
 }

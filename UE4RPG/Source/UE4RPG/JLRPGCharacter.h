@@ -54,6 +54,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void AddHealth(float Value);
+	UFUNCTION(BlueprintCallable)
+	void OpenMyBag();
 
 
 
